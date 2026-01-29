@@ -2,6 +2,14 @@
 
 A skill that gives the AI specialized guidance for writing, debugging, and maintaining **Playwright** tests in **TypeScript**. Use it in any repo where you work with Playwright so the assistant follows best practices for E2E, component, API, and visual regression testing.
 
+## Installation
+
+```bash
+npx skills add https://github.com/currents-dev/playwright-best-practices-skill --skill playwright-best-practices
+```
+
+After adding, the AI will use it when your questions or tasks involve writing Playwright tests, debugging failures, fixing flaky tests, setting up CI/CD, implementing POM, or similar Playwright work.
+
 ## What This Skill Covers
 
 - **Writing tests** — Structure, locators, assertions, waiting strategies, Page Object Model, fixtures
@@ -10,14 +18,6 @@ A skill that gives the AI specialized guidance for writing, debugging, and maint
 - **Infrastructure** — Project config, CI/CD, parallel execution, performance, reporting
 
 The skill is activity-based: the AI is directed to the right reference (e.g. `locators.md`, `debugging.md`) depending on what you’re doing, so you get focused advice without loading everything at once.
-
-## Installation
-
-```bash
-npx skills add https://github.com/currents-dev/playwright-best-practices-skill --skill playwright-best-practices
-```
-
-After adding, the skill is available in Cursor. The AI will use it when your questions or tasks involve writing Playwright tests, debugging failures, fixing flaky tests, setting up CI/CD, implementing POM, or similar Playwright work.
 
 ## When the Skill Is Used
 
