@@ -341,3 +341,17 @@ await expect(page.getByRole('button')).toBeVisible({ timeout: 10000 });
 | Use `toPass()` for polling | Write manual retry loops |
 | Configure appropriate timeouts | Use `waitForTimeout()` |
 | Check specific conditions | Wait for arbitrary time |
+
+## Anti-Patterns to Avoid
+
+| Anti-Pattern | Problem | Solution |
+|--------------|---------|----------|
+| `await page.waitForTimeout(5000)` | Slow, flaky, arbitrary timing | Use auto-waiting or `waitForResponse` |
+| `await new Promise(resolve => setTimeout(resolve, 1000))` | Same as above | Use `waitForResponse` or element state waits |
+| Generic assertions on DOM elements | No auto-retry, flaky | Use web-first assertions with `expect()` |
+
+## Related References
+
+- **Debugging timeout issues**: See [debugging.md](debugging.md) for troubleshooting
+- **Fixing flaky tests**: See [debugging.md](debugging.md) for race condition solutions
+- **Network interception**: See [test-organization.md](test-organization.md) for API mocking

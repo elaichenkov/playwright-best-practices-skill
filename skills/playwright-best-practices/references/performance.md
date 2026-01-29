@@ -421,3 +421,9 @@ test('lighthouse audit', async ({ page }) => {
 | Reduce workers if memory-bound | Medium |
 | Cache API responses | Medium |
 | Skip unnecessary tests | Low-Medium |
+
+## Related References
+
+- **CI/CD sharding**: See [ci-cd.md](ci-cd.md) for CI configuration
+- **Test organization**: See [test-organization.md](test-organization.md) for structuring tests
+- **Fixtures for reuse**: See [fixtures-hooks.md](fixtures-hooks.md) for authentication patterns

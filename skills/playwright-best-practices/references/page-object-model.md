@@ -307,3 +307,9 @@ test('can login', async ({ loginPage }) => {
   await loginPage.login('user@example.com', 'password');
 });
 ```
+
+## Related References
+
+- **Locator strategies**: See [locators.md](locators.md) for selecting elements
+- **Fixtures**: See [fixtures-hooks.md](fixtures-hooks.md) for advanced fixture patterns
+- **Test organization**: See [test-organization.md](test-organization.md) for structuring test suites

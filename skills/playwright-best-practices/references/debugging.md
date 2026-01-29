@@ -378,10 +378,134 @@ Features:
 
 ## Troubleshooting Checklist
 
-| Issue | Check |
-|-------|-------|
-| Element not found | Locator specificity, visibility, iframe |
-| Timeout | Network, animations, loading states |
-| Flaky test | Race conditions, isolation, state |
-| CI failures | Environment, secrets, dependencies |
-| Slow tests | Parallelization, network mocking |
+### By Symptom
+
+| Symptom | Common Causes | Quick Fixes | Reference |
+|---------|---------------|-------------|-----------|
+| **Element not found** | Wrong selector, element not visible, in iframe, timing issue | Check locator with Inspector, wait for visibility, use frameLocator | [locators.md](locators.md), [assertions-waiting.md](assertions-waiting.md) |
+| **Timeout errors** | Slow network, heavy page load, waiting for wrong condition | Increase timeout, wait for specific response, check network tab | [assertions-waiting.md](assertions-waiting.md) |
+| **Flaky tests** | Race conditions, shared state, timing dependencies | Use auto-waiting, isolate tests, fix state management | [assertions-waiting.md](assertions-waiting.md), [fixtures-hooks.md](fixtures-hooks.md) |
+| **Tests pass locally, fail in CI** | Environment differences, missing dependencies, timing | Check CI logs, verify environment vars, add retries | [ci-cd.md](ci-cd.md) |
+| **Slow test execution** | Not parallelized, heavy network calls, unnecessary waits | Enable parallelization, mock APIs, optimize waits | [performance.md](performance.md) |
+| **Selector works in browser but not in test** | Element not attached, wrong context, dynamic content | Use auto-waiting, check iframe, verify element state | [locators.md](locators.md) |
+| **Test fails on retry** | Non-deterministic data, external dependencies | Use test data fixtures, mock external services | [fixtures-hooks.md](fixtures-hooks.md) |
+
+### Step-by-Step Debugging Process
+
+1. **Reproduce the issue**
+   ```bash
+   # Run test multiple times to confirm flakiness
+   npx playwright test --repeat-each=10
+   
+   # Run with trace
+   npx playwright test --trace on
+   ```
+
+2. **Inspect the failure**
+   ```bash
+   # View trace
+   npx playwright show-trace test-results/path-to-trace.zip
+   
+   # Run in headed mode
+   npx playwright test --headed
+   ```
+
+3. **Isolate the problem**
+   ```typescript
+   // Add debugging points
+   await page.pause();
+   
+   // Log element state
+   console.log('Element count:', await page.getByRole('button').count());
+   console.log('Element visible:', await page.getByRole('button').isVisible());
+   ```
+
+4. **Check related areas**
+   - Network requests: Check if API calls are completing
+   - Timing: Verify auto-waiting is working
+   - State: Ensure test isolation
+   - Environment: Compare local vs CI
+
+5. **Apply fix and verify**
+   - Fix the root cause (not just symptoms)
+   - Run multiple times to confirm stability
+   - Check related tests aren't affected
+
+## Common Scenarios
+
+### Scenario 1: Element Appears After Delay
+
+**Problem**: Element exists in DOM but test fails with "element not found"
+
+```typescript
+// Bad: No waiting
+await page.getByRole('button').click(); // Fails if button not ready
+
+// Good: Auto-waiting handles this
+await page.getByRole('button').click(); // Waits automatically
+
+// Better: Explicit wait for complex cases
+await page.getByRole('button').waitFor({ state: 'visible' });
+await page.getByRole('button').click();
+```
+
+### Scenario 2: Test Fails Intermittently
+
+**Problem**: Test passes sometimes, fails other times
+
+```typescript
+// Bad: Race condition
+test('add item', async ({ page }) => {
+  await page.goto('/items');
+  await page.click('button'); // May click before page ready
+  expect(await page.locator('.item').count()).toBe(1);
+});
+
+// Good: Wait for specific condition
+test('add item', async ({ page }) => {
+  await page.goto('/items');
+  await page.getByRole('button', { name: 'Add Item' }).click();
+  await expect(page.locator('.item')).toHaveCount(1);
+});
+```
+
+### Scenario 3: CI Failures Only
+
+**Problem**: Tests pass locally but fail in CI
+
+```typescript
+// Check environment differences
+test('environment check', async ({ page }) => {
+  console.log('Base URL:', process.env.BASE_URL);
+  console.log('CI:', process.env.CI);
+  
+  // Add CI-specific handling
+  const timeout = process.env.CI ? 60000 : 30000;
+  test.setTimeout(timeout);
+});
+```
+
+### Scenario 4: Multiple Elements Match
+
+**Problem**: Selector matches multiple elements
+
+```typescript
+// Bad: Ambiguous selector
+await page.getByRole('button').click(); // Which button?
+
+// Good: More specific
+await page.getByRole('button', { name: 'Submit' }).click();
+
+// Or filter
+await page.getByRole('button')
+  .filter({ hasText: 'Submit' })
+  .first()
+  .click();
+```
+
+## Related References
+
+- **Locator issues**: See [locators.md](locators.md) for selector strategies
+- **Waiting problems**: See [assertions-waiting.md](assertions-waiting.md) for waiting patterns
+- **Flaky tests**: See [fixtures-hooks.md](fixtures-hooks.md) for test isolation
+- **CI issues**: See [ci-cd.md](ci-cd.md) for CI configuration

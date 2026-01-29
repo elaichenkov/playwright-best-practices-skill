@@ -359,3 +359,17 @@ export const test = base.extend<TestData>({
 | Keep setup minimal | Do heavy lifting in worker-scoped fixtures |
 | Clean up resources | Use teardown in fixtures, not afterEach |
 | Avoid shared state | Each fixture instance should be independent |
+
+## Anti-Patterns to Avoid
+
+| Anti-Pattern | Problem | Solution |
+|--------------|---------|----------|
+| Shared mutable state between tests | Race conditions, order dependencies | Use fixtures for isolation |
+| Global variables in tests | Tests depend on execution order | Use fixtures or beforeEach for setup |
+| Not cleaning up test data | Tests interfere with each other | Use fixtures with teardown or database transactions |
+
+## Related References
+
+- **Page Objects with fixtures**: See [page-object-model.md](page-object-model.md) for POM patterns
+- **Test organization**: See [test-organization.md](test-organization.md) for test structure
+- **Debugging fixture issues**: See [debugging.md](debugging.md) for troubleshooting

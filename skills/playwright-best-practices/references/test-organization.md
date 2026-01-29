@@ -2,13 +2,73 @@
 
 ## Table of Contents
 
-1. [Test Types Overview](#test-types-overview)
-2. [E2E Tests](#e2e-tests)
-3. [Component Tests](#component-tests)
-4. [API Tests](#api-tests)
-5. [Visual Regression Tests](#visual-regression-tests)
-6. [Directory Structure](#directory-structure)
-7. [Tagging & Filtering](#tagging--filtering)
+1. [Basic Test Structure](#basic-test-structure)
+2. [Configuration](#configuration)
+3. [Test Types Overview](#test-types-overview)
+4. [E2E Tests](#e2e-tests)
+5. [Component Tests](#component-tests)
+6. [API Tests](#api-tests)
+7. [Visual Regression Tests](#visual-regression-tests)
+8. [Directory Structure](#directory-structure)
+9. [Tagging & Filtering](#tagging--filtering)
+
+## Basic Test Structure
+
+### Minimal Test Example
+
+```typescript
+import { test, expect } from '@playwright/test';
+
+test.describe('Feature Name', () => {
+  test('should perform expected behavior', async ({ page }) => {
+    await page.goto('/path');
+    await page.getByRole('button', { name: 'Submit' }).click();
+    await expect(page.getByText('Success')).toBeVisible();
+  });
+});
+```
+
+### Project Setup
+
+```bash
+npm init playwright@latest
+```
+
+## Configuration
+
+### Essential Configuration
+
+```typescript
+// playwright.config.ts
+import { defineConfig, devices } from '@playwright/test';
+
+export default defineConfig({
+  testDir: './tests',
+  fullyParallel: true,
+  forbidOnly: !!process.env.CI,
+  retries: process.env.CI ? 2 : 0,
+  workers: process.env.CI ? 1 : undefined,
+  reporter: [['html'], ['list']],
+  use: {
+    baseURL: 'http://localhost:3000',
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+  },
+  projects: [
+    { name: 'setup', testMatch: /.*\.setup\.ts/ },
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+      dependencies: ['setup'],
+    },
+  ],
+  webServer: {
+    command: 'npm run dev',
+    url: 'http://localhost:3000',
+    reuseExistingServer: !process.env.CI,
+  },
+});
+```
 
 ## Test Types Overview
 
@@ -156,6 +216,63 @@ test('updates on prop change', async ({ mount }) => {
 ## API Tests
 
 Test backend APIs without browser.
+
+### API Mocking Patterns
+
+For E2E tests that need to mock API responses:
+
+```typescript
+// Mock single endpoint
+test('displays mocked users', async ({ page }) => {
+  await page.route('**/api/users', route =>
+    route.fulfill({
+      status: 200,
+      json: [{ id: 1, name: 'Test User' }],
+    })
+  );
+  
+  await page.goto('/users');
+  await expect(page.getByText('Test User')).toBeVisible();
+});
+
+// Mock with different responses
+test('handles API errors', async ({ page }) => {
+  await page.route('**/api/users', route =>
+    route.fulfill({
+      status: 500,
+      json: { error: 'Server error' },
+    })
+  );
+  
+  await page.goto('/users');
+  await expect(page.getByText('Server error')).toBeVisible();
+});
+
+// Conditional mocking
+test('mocks based on request', async ({ page }) => {
+  await page.route('**/api/users', (route, request) => {
+    if (request.method() === 'GET') {
+      route.fulfill({ json: [{ id: 1, name: 'User' }] });
+    } else {
+      route.continue();
+    }
+  });
+});
+
+// Mock with delay (simulate slow network)
+test('handles slow API', async ({ page }) => {
+  await page.route('**/api/data', route =>
+    route.fulfill({
+      json: { data: 'test' },
+      delay: 2000, // 2 second delay
+    })
+  );
+  
+  await page.goto('/dashboard');
+  await expect(page.getByText('Loading...')).toBeVisible();
+  await expect(page.getByText('test')).toBeVisible();
+});
+```
 
 ### Using Request Fixture
 
@@ -379,6 +496,21 @@ tests/
     ├── login.page.ts
     └── dashboard.page.ts
 ```
+
+## Anti-Patterns to Avoid
+
+| Anti-Pattern | Problem | Solution |
+|--------------|---------|----------|
+| Long test files | Hard to maintain, slow to navigate | Split by feature, use POM |
+| Tests depend on execution order | Flaky, hard to debug | Keep tests independent |
+| Testing multiple features in one test | Hard to debug failures | One feature per test |
+
+## Related References
+
+- **API Mocking**: See [fixtures-hooks.md](fixtures-hooks.md) for fixture-based mocking
+- **Network Interception**: See [assertions-waiting.md](assertions-waiting.md) for waiting on network requests
+- **Page Objects**: See [page-object-model.md](page-object-model.md) for organizing page interactions
+- **Test Data**: See [fixtures-hooks.md](fixtures-hooks.md) for managing test data
 
 ## Tagging & Filtering
 
