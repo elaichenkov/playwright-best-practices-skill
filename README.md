@@ -7,7 +7,7 @@
 
 # Playwright Best Practices Skill
 
-A skill that gives the AI specialized guidance for writing, debugging, and maintaining **Playwright** tests in **TypeScript**. Use it in any repo where you work with Playwright so the assistant follows best practices for E2E, component, API, visual regression, accessibility, security, and i18n testing.
+A skill that gives the AI specialized guidance for writing, debugging, and maintaining **Playwright** tests in **TypeScript**. Use it in any repo where you work with Playwright so the assistant follows best practices for E2E, component, API, visual regression, accessibility, security, i18n, Electron, and browser extension testing.
 
 ## Installation
 
@@ -26,6 +26,7 @@ The skill triggers when the AI infers you need help with things like:
 - Implementing file uploads/downloads, date/time mocking, or WebSocket testing
 - Handling OAuth popups, geolocation, permissions, or multi-tab flows
 - Testing iframes, canvas/WebGL, service workers, or PWA features
+- Testing Electron desktop apps or browser extensions
 - Internationalization (i18n), locales, RTL layouts, or date/number formats
 - Testing error states, offline mode, or network failure scenarios
 - Security testing (XSS, CSRF, authentication, authorization)
@@ -43,6 +44,8 @@ You don't have to mention "skill" or "Playwright best practices"; describe your 
 
 | Topic                | Reference               | Use for                                           |
 | -------------------- | ----------------------- | ------------------------------------------------- |
+| Debugging            | `debugging.md`          | Trace viewer, inspector, common issues            |
+| Flaky tests          | `flaky-tests.md`        | Detection, diagnosis, fixing, quarantine          |
 | Test organization    | `test-organization.md`  | Structure, config, E2E/component/API/visual tests |
 | Locators             | `locators.md`           | Selectors, robustness, avoiding brittle locators  |
 | Assertions & waiting | `assertions-waiting.md` | Expect APIs, auto-waiting, polling                |
@@ -68,25 +71,24 @@ You don't have to mention "skill" or "Playwright best practices"; describe your 
 | Canvas/WebGL        | `canvas-webgl.md`        | Canvas testing, charts, WebGL, games           |
 | Service workers     | `service-workers.md`     | PWA, caching, offline, push notifications      |
 | i18n                | `i18n.md`                | Locales, RTL, date/number formats              |
+| Electron            | `electron.md`            | Desktop apps, IPC, main/renderer process       |
+| Browser extensions  | `browser-extensions.md`  | Popup, background, content scripts, APIs       |
 | Error testing       | `error-testing.md`       | Error boundaries, offline, network failures    |
 | Security testing    | `security-testing.md`    | XSS, CSRF, auth security, authorization        |
 | Performance testing | `performance-testing.md` | Web Vitals, budgets, Lighthouse                |
 
 ### Infrastructure & Advanced
 
-| Topic            | Reference                  | Use for                                  |
-| ---------------- | -------------------------- | ---------------------------------------- |
-| Flaky tests      | `flaky-tests.md`           | Detection, diagnosis, fixing, quarantine |
-| Debugging        | `debugging.md`             | Trace viewer, inspector, common issues   |
-| CI/CD            | `ci-cd.md`                 | Pipelines, sharding, Docker              |
-| Performance      | `performance.md`           | Parallel runs, optimization              |
-| Global setup     | `global-setup.md`          | globalSetup/Teardown, DB migrations      |
-| Projects         | `projects-dependencies.md` | Project config, dependencies, filtering  |
-| Reporters        | `reporters.md`             | Custom reporters, Slack/Teams, analytics |
-| Test coverage    | `test-coverage.md`         | V8 coverage, reports, thresholds, CI     |
-| Network advanced | `network-advanced.md`      | GraphQL, HAR, request modification       |
-| Third-party      | `third-party.md`           | OAuth, payments, email/SMS mocking       |
-| Console errors   | `console-errors.md`        | Capturing and failing on JS errors       |
+| Topic            | Reference                  | Use for                                 |
+| ---------------- | -------------------------- | --------------------------------------- |
+| CI/CD            | `ci-cd.md`                 | Pipelines, sharding, Docker             |
+| Performance      | `performance.md`           | Parallel runs, optimization             |
+| Global setup     | `global-setup.md`          | globalSetup/Teardown, DB migrations     |
+| Projects         | `projects-dependencies.md` | Project config, dependencies, filtering |
+| Test coverage    | `test-coverage.md`         | V8 coverage, reports, thresholds, CI    |
+| Network advanced | `network-advanced.md`      | GraphQL, HAR, request modification      |
+| Third-party      | `third-party.md`           | OAuth, payments, email/SMS mocking      |
+| Console errors   | `console-errors.md`        | Capturing and failing on JS errors      |
 
 The skill's `SKILL.md` maps your current activity to these references so the right content is used in context.
 

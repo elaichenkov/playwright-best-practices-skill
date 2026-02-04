@@ -474,4 +474,3 @@ test("no performance regression", async ({ page }) => {
 
 - **Performance Optimization**: See [performance.md](performance.md) for test execution performance
 - **CI/CD**: See [ci-cd.md](ci-cd.md) for CI integration
-- **Reporters**: See [reporters.md](reporters.md) for custom reporting

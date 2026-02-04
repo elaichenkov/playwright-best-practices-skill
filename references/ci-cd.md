@@ -246,19 +246,6 @@ export default defineConfig({
 });
 ```
 
-### Third-Party Reporters
-
-```bash
-# Allure
-npm install -D allure-playwright
-
-# Configure
-reporter: [['allure-playwright']],
-
-# Generate report
-npx allure generate allure-results -o allure-report
-```
-
 ## Sharding
 
 ### Command Line

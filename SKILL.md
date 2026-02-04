@@ -1,6 +1,6 @@
 ---
 name: playwright-best-practices
-description: Provides comprehensive guidance for writing, debugging, and maintaining Playwright tests in TypeScript. Use when writing Playwright tests, fixing flaky tests, debugging failures, implementing Page Object Model, configuring CI/CD, optimizing performance, mocking APIs, handling authentication or OAuth, testing accessibility (axe-core), file uploads/downloads, date/time mocking, WebSockets, geolocation, permissions, multi-tab/popup flows, mobile/responsive layouts, touch gestures, GraphQL, error handling, offline mode, multi-user collaboration, custom reporters, third-party services (payments, email verification), console error monitoring, global setup/teardown, test annotations (skip, fixme, slow), project dependencies, security testing (XSS, CSRF, auth), performance budgets (Web Vitals, Lighthouse), iframes, component testing, canvas/WebGL, service workers/PWA, test coverage, or i18n/localization testing. Covers E2E, component, API, visual, accessibility, security, and i18n testing.
+description: Provides comprehensive guidance for writing, debugging, and maintaining Playwright tests in TypeScript. Use when writing Playwright tests, fixing flaky tests, debugging failures, implementing Page Object Model, configuring CI/CD, optimizing performance, mocking APIs, handling authentication or OAuth, testing accessibility (axe-core), file uploads/downloads, date/time mocking, WebSockets, geolocation, permissions, multi-tab/popup flows, mobile/responsive layouts, touch gestures, GraphQL, error handling, offline mode, multi-user collaboration, third-party services (payments, email verification), console error monitoring, global setup/teardown, test annotations (skip, fixme, slow), project dependencies, security testing (XSS, CSRF, auth), performance budgets (Web Vitals, Lighthouse), iframes, component testing, canvas/WebGL, service workers/PWA, test coverage, i18n/localization, Electron apps, or browser extension testing. Covers E2E, component, API, visual, accessibility, security, Electron, and extension testing.
 ---
 
 # Playwright Best Practices
@@ -32,6 +32,8 @@ Consult these references based on what you're doing:
 | **Testing iframes**                 | [iframes.md](references/iframes.md)                                                                                                                       |
 | **Testing canvas/WebGL**            | [canvas-webgl.md](references/canvas-webgl.md)                                                                                                             |
 | **Internationalization (i18n)**     | [i18n.md](references/i18n.md)                                                                                                                             |
+| **Testing Electron apps**           | [electron.md](references/electron.md)                                                                                                                     |
+| **Testing browser extensions**      | [browser-extensions.md](references/browser-extensions.md)                                                                                                 |
 
 ### Mobile & Responsive Testing
 
@@ -124,9 +126,6 @@ Consult these references based on what you're doing:
 | **Optimizing test performance**         | [performance.md](references/performance.md), [test-organization.md](references/test-organization.md)                     |
 | **Configuring parallel execution**      | [performance.md](references/performance.md)                                                                              |
 | **Isolating test data between workers** | [fixtures-hooks.md](references/fixtures-hooks.md), [performance.md](references/performance.md)                           |
-| **Setting up test reporting**           | [ci-cd.md](references/ci-cd.md), [reporters.md](references/reporters.md)                                                 |
-| **Custom reporters & analytics**        | [reporters.md](references/reporters.md)                                                                                  |
-| **Slack/Teams notifications**           | [reporters.md](references/reporters.md)                                                                                  |
 | **Test coverage**                       | [test-coverage.md](references/test-coverage.md)                                                                          |
 
 ### Advanced Patterns
@@ -164,6 +163,8 @@ What are you doing?
 │  ├─ Accessibility test → accessibility.md
 │  ├─ Mobile/responsive test → mobile-testing.md
 │  ├─ i18n/locale test → i18n.md
+│  ├─ Electron app test → electron.md
+│  ├─ Browser extension test → browser-extensions.md
 │  └─ Multi-user test → multi-user.md
 │
 ├─ Testing specific features?
@@ -208,8 +209,6 @@ What are you doing?
 │  ├─ Project dependencies → projects-dependencies.md
 │  ├─ Test performance → performance.md
 │  ├─ Test coverage → test-coverage.md
-│  ├─ Custom reporters → reporters.md
-│  ├─ Slack/Teams alerts → reporters.md
 │  └─ Project config → test-organization.md, projects-dependencies.md
 │
 └─ Organizing tests?

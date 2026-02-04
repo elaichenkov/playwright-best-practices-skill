@@ -492,5 +492,4 @@ jobs:
 ## Related References
 
 - **CI/CD**: See [ci-cd.md](ci-cd.md) for pipeline configuration
-- **Reporters**: See [reporters.md](reporters.md) for custom reporting
 - **Performance**: See [performance.md](performance.md) for optimizing coverage collection

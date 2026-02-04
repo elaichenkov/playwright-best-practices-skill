@@ -110,79 +110,13 @@ test.describe("Checkout Flow", () => {
 
 ## Component Tests
 
-Test individual components in isolation.
-
-### Setup
+Test individual components in isolation using Playwright Component Testing.
 
 ```bash
 npm init playwright@latest -- --ct
 ```
 
-### Configuration
-
-```typescript
-// playwright-ct.config.ts
-import { defineConfig, devices } from "@playwright/experimental-ct-react";
-
-export default defineConfig({
-  testDir: "./tests/component",
-  use: {
-    ctPort: 3100,
-  },
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
-});
-```
-
-### Component Test Example
-
-```typescript
-// tests/component/Button.spec.tsx
-import { test, expect } from '@playwright/experimental-ct-react';
-import { Button } from '../../src/components/Button';
-
-test.describe('Button', () => {
-  test('renders with text', async ({ mount }) => {
-    const component = await mount(<Button>Click me</Button>);
-    await expect(component).toContainText('Click me');
-  });
-
-  test('handles click', async ({ mount }) => {
-    let clicked = false;
-    const component = await mount(
-      <Button onClick={() => { clicked = true; }}>Click me</Button>
-    );
-
-    await component.click();
-    expect(clicked).toBe(true);
-  });
-
-  test('disabled state', async ({ mount }) => {
-    const component = await mount(<Button disabled>Click me</Button>);
-
-    await expect(component).toBeDisabled();
-    await expect(component).toHaveCSS('opacity', '0.5');
-  });
-
-  test('loading state', async ({ mount }) => {
-    const component = await mount(<Button loading>Submit</Button>);
-
-    await expect(component.getByRole('progressbar')).toBeVisible();
-    await expect(component).toBeDisabled();
-  });
-});
-```
-
-### Testing with Props Updates
-
-```typescript
-test('updates on prop change', async ({ mount }) => {
-  const component = await mount(<Counter value={0} />);
-  await expect(component).toContainText('0');
-
-  await component.update(<Counter value={5} />);
-  await expect(component).toContainText('5');
-});
-```
+For comprehensive component testing patterns including mounting, props, events, slots, mocking, and framework-specific examples (React, Vue, Svelte), see **[component-testing.md](component-testing.md)**.
 
 ## API Tests
 
@@ -245,40 +179,7 @@ test("handles slow API", async ({ page }) => {
 });
 ```
 
-### API Client Fixture
-
-```typescript
-// fixtures/api.fixture.ts
-import { test as base, APIRequestContext } from "@playwright/test";
-
-class ApiClient {
-  constructor(
-    private request: APIRequestContext,
-    private baseURL: string,
-  ) {}
-
-  async getUsers() {
-    const response = await this.request.get(`${this.baseURL}/users`);
-    return response.json();
-  }
-
-  async createUser(data: { name: string; email: string }) {
-    const response = await this.request.post(`${this.baseURL}/users`, { data });
-    return response.json();
-  }
-}
-
-export const test = base.extend<{ api: ApiClient }>({
-  api: async ({ request }, use) => {
-    await use(
-      new ApiClient(
-        request,
-        process.env.API_URL || "http://localhost:3000/api",
-      ),
-    );
-  },
-});
-```
+For advanced patterns (GraphQL mocking, HAR recording, request modification, network throttling), see **[network-advanced.md](network-advanced.md)**.
 
 ## Visual Regression Tests
 
@@ -419,8 +320,8 @@ tests/
 
 ## Related References
 
-- **API Mocking**: See [fixtures-hooks.md](fixtures-hooks.md) for fixture-based mocking
-- **Network Interception**: See [assertions-waiting.md](assertions-waiting.md) for waiting on network requests
+- **Component Testing**: See [component-testing.md](component-testing.md) for comprehensive CT patterns
+- **Projects**: See [projects-dependencies.md](projects-dependencies.md) for project-based filtering
 - **Page Objects**: See [page-object-model.md](page-object-model.md) for organizing page interactions
 - **Test Data**: See [fixtures-hooks.md](fixtures-hooks.md) for managing test data
 
@@ -457,31 +358,4 @@ npx playwright test --grep-invert @slow
 npx playwright test --grep "@smoke|@critical"
 ```
 
-### Project-Based Filtering
-
-```typescript
-// playwright.config.ts
-export default defineConfig({
-  projects: [
-    {
-      name: "smoke",
-      testMatch: /.*\.spec\.ts/,
-      grep: /@smoke/,
-    },
-    {
-      name: "e2e",
-      testDir: "./tests/e2e",
-    },
-    {
-      name: "api",
-      testDir: "./tests/api",
-    },
-  ],
-});
-```
-
-```bash
-# Run specific project
-npx playwright test --project=smoke
-npx playwright test --project=api
-```
+For project-based filtering and advanced project configuration, see **[projects-dependencies.md](projects-dependencies.md)**.

@@ -421,4 +421,3 @@ test.describe("Desktop features", () => {
 
 - **Test Organization**: See [test-organization.md](test-organization.md) for structuring tests
 - **Debugging**: See [debugging.md](debugging.md) for troubleshooting
-- **Reporters**: See [reporters.md](reporters.md) for custom annotation reporting
