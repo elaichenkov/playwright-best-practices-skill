@@ -331,7 +331,7 @@ export const test = base.extend<{ tempFile: string }>({
 
 ```bash
 # Run headless with CI environment variable
-CI=true npx playwright test --headed=false
+CI=true npx playwright test
 
 # Limit CPU (Linux/Mac)
 cpulimit -l 50 -- npx playwright test
@@ -352,10 +352,6 @@ export default defineConfig({
   use: {
     viewport: { width: 1280, height: 720 },
     deviceScaleFactor: 1,
-    // Reduce animation-related flakiness
-    launchOptions: {
-      args: ["--disable-animations"],
-    },
   },
 });
 ```

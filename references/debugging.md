@@ -207,7 +207,7 @@ test("find slow requests", async ({ page }) => {
 
 ```bash
 # Run in headless mode like CI
-CI=true npx playwright test --headed=false
+CI=true npx playwright test
 
 # Match CI browser versions
 npx playwright install --with-deps
